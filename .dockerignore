@@ -1,0 +1,5 @@
+# .dockerignore
+
+storage/dbdata/
+
+# Other files and folder

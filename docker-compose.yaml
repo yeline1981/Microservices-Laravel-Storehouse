@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+    storehouse:  
+        build: 
+            context: .
+            dockerfile: Dockerfile   
+        command: 'php artisan serve --host=0.0.0.0'    
+        ports:
+            - "8001:8000"
+        volumes:
+            - .:/app
+            - /app/vendor/             
+        depends_on:
+            - storehouse_db  
+        links:
+            - storehouse_db   
+        networks:
+            - storehouse-network  
+
+    storehouse_queue:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: 'php artisan queue:work'
+        depends_on:
+            - storehouse_db  
+        networks:
+            - storehouse-network      
+
+    storehouse_db:
+        image: mysql:8.0    
+        volumes:
+            - ./storage/dbdata/mysql:/var/lib/mysql      
+        environment:
+            - MYSQL_ROOT_PASSWORD=storehouse
+            - MYSQL_DATABASE=storehouse
+            - MYSQL_USER=storehouse
+            - MYSQL_PASSWORD=storehouse
+        ports:
+            - 33068:3306
+        networks:
+            - storehouse-network
+
+#Docker Networks
+networks:
+    storehouse-network:
+     driver: bridge
+
+                
