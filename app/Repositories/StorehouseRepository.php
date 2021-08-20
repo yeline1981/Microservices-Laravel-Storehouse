@@ -6,9 +6,6 @@ use App\Models\StoreHouse;
 
 use App\Jobs\AttendIngredientsJob; 
 
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-
 class StorehouseRepository {
 
     public function list(){
@@ -27,8 +24,6 @@ class StorehouseRepository {
 
         return $storehouse;
 
-    }
-
-    
+    }   
 
 }

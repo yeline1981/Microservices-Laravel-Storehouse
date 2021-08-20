@@ -16,6 +16,7 @@ services:
         links:
             - storehouse_db   
         networks:
+            - default
             - storehouse-network  
 
     storehouse_queue:
@@ -43,8 +44,9 @@ services:
             - storehouse-network
 
 #Docker Networks
-networks:
+networks:                
     storehouse-network:
-     driver: bridge
+        external: true         
+        name: storehouse-network    
 
                 

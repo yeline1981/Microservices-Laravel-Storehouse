@@ -95,9 +95,7 @@ class AttendIngredientsJob implements ShouldQueue
             $complete = false;
             $attend = $elem['units'];
 
-            while($complete == false){
-
-                               
+            while($complete == false){                               
 
                     $response = Http::get($url . '?ingredient=' . $elem['ingredient']);
 
