@@ -9,7 +9,7 @@ class PurchaseRepository {
 
     public function list(){ 
                          
-        return Purchase::all();                   
+        return Purchase::orderByDesc('created_at')->get();                   
     } 
 
     public function store(array $purchase){

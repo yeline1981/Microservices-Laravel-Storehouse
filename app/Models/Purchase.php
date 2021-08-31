@@ -10,5 +10,5 @@ class Purchase extends Model
 
     protected $fillable = ['ingredient_id', 'units'];
 
-    protected $hidden = ['created_at', 'updated_at'];
+    protected $hidden = ['updated_at'];
 }
