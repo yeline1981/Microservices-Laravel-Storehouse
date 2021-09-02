@@ -11,4 +11,9 @@ class Purchase extends Model
     protected $fillable = ['ingredient_id', 'units'];
 
     protected $hidden = ['updated_at'];
+
+    public function ingredient()
+    {
+        return $this->belongsTo(StoreHouse::class);
+    }
 }

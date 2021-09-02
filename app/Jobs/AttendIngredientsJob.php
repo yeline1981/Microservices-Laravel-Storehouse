@@ -49,8 +49,10 @@ class AttendIngredientsJob implements ShouldQueue
         */        
        
         $notinstock = [];
+
         Log::info('ingredientes a despachar: ' . count($this->data['ingredients']));
 
+        echo 'ingredientes a despachar: ' . count($this->data['ingredients']) . PHP_EOL;
         
         foreach($this->data['ingredients'] as $param){
             
@@ -97,11 +99,13 @@ class AttendIngredientsJob implements ShouldQueue
 
             while($complete == false){                               
 
-                    $response = Http::get($url . '?ingredient=' . $elem['ingredient']);
+                try{            
+                    
+                    $response = Http::get($url . '?ingredient=' . strtolower($elem['ingredient']));
+                    
+                    $response = json_decode($response, true);   
 
-                    $response = json_decode($response, true);               
-
-                    echo 'Recibí: ' . $response['quantitySold'] . PHP_EOL;
+                    //echo 'Recibí: ' . $response['quantitySold'] . PHP_EOL;
 
                     $attend = $attend - $response['quantitySold'];
 
@@ -115,13 +119,20 @@ class AttendIngredientsJob implements ShouldQueue
                     $storehouse->save();
 
                     Purchase::create(['units' => $response['quantitySold'],
-                                      'ingredient_id' => $storehouse->id]);  
+                                      'ingredient_id' => $storehouse->id]); 
+                }
+                catch (\Exception $e) {
+
+                    echo $e->getMessage() . PHP_EOL;
+                }                                        
                 
             }           
             
         }
         
         echo 'Despacho realizado: ' . $this->data['order']['id'] . PHP_EOL;
+
+        Log::info('Despacho realizado: ' . $this->data['order']['id']);
 
         OrderProcessed::dispatch($this->data['order']['id'])->onQueue('kitchen_queue');;
     }

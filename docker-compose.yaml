@@ -23,7 +23,7 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        command: 'php artisan queue:work'
+        command: sh -c 'php artisan queue:work && php artisan rabbitmq:consume'
         depends_on:
             - storehouse_db  
         networks:
